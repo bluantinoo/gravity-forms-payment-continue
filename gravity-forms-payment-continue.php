@@ -203,10 +203,14 @@ class GravityFormsPaymentContinue extends GFAddOn {
 	 * @uses GFFeedAddOn::get_active_feeds()
 	 */
 	public function has_processing_payment($form, $entry) {
-		$payment_status = apply_filters( 'gform_payment_status', $entry['payment_status'], $form, $entry );
+		if ( isset($entry['payment_status']) ){
+			$payment_status = apply_filters( 'gform_payment_status', $entry['payment_status'], $form, $entry );
 
-		// If active feeds were found and payment status is processing, display meta box.
-		return ( $this->gateway->get_active_feeds( $form['id'] ) && 'Paid' !== $payment_status );
+			// If active feeds were found and payment status is processing, display meta box.
+			return ( $this->gateway->get_active_feeds( $form['id'] ) && 'Paid' !== $payment_status );
+		} else {
+			return false; 
+		}
 	}
 
 	/**
